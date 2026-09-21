@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TRACE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root { --ink:#f5f5f6; --mute:#7c7c82; --line:rgba(255,255,255,.08); }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html,body { background:#050506; color:var(--ink); font-family:Inter,system-ui,sans-serif; }
+    body { min-height:100vh; overflow-x:hidden; }
+    a { color:inherit; text-decoration:none; }
+    .noise {
+      pointer-events:none; position:fixed; inset:0; z-index:8; opacity:.07;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .glow {
+      pointer-events:none; position:fixed; width:42vw; height:42vw; border-radius:50%;
+      background:radial-gradient(circle, rgba(255,255,255,.07), transparent 62%);
+      transform:translate(-50%,-50%); z-index:0;
+    }
+    .gridbg {
+      pointer-events:none; position:fixed; inset:0; z-index:0;
+      background-image:linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size:72px 72px;
+      mask-image:radial-gradient(ellipse at center, #000 20%, transparent 75%);
+    }
+    .wrap { position:relative; z-index:2; max-width:760px; margin:0 auto; padding:36px 24px 100px; }
+    header { display:flex; justify-content:space-between; align-items:center; margin-bottom:96px; }
+    .brand { display:flex; align-items:center; gap:12px; font-size:12px; letter-spacing:.28em; font-weight:600; }
+    .mark { width:22px; height:22px; position:relative; }
+    .mark i, .mark b { position:absolute; background:#fff; }
+    .mark i { left:2px; right:2px; top:3px; height:3px; }
+    .mark b { left:9px; width:3px; top:6px; bottom:2px; }
+    nav { display:flex; gap:28px; font-size:12px; color:var(--mute); letter-spacing:.08em; }
+    nav a { position:relative; }
+    nav a::after { content:""; position:absolute; left:0; right:100%; bottom:-4px; height:1px; background:#fff; transition:right .3s; }
+    nav a:hover::after { right:0; }
+    .rise { opacity:0; transform:translateY(18px); animation:up .9s ease forwards; }
+    .d2 { animation-delay:.18s; } .d3 { animation-delay:.32s; } .d4 { animation-delay:.48s; }
+    @keyframes up { to { opacity:1; transform:none; } }
+    .kicker { font-size:11px; letter-spacing:.32em; text-transform:uppercase; color:var(--mute); margin-bottom:20px; }
+    h1 { font-size:clamp(64px, 16vw, 128px); font-weight:500; letter-spacing:-.06em; line-height:.86; }
+    h1 span { display:inline-block; animation:soft 5s ease-in-out infinite; }
+    @keyframes soft { 50% { opacity:.72; } }
+    .sub { margin:28px 0 40px; max-width:380px; color:var(--mute); font-size:15px; line-height:1.6; }
+    .cta { display:flex; gap:10px; flex-wrap:wrap; }
+    .btn { height:46px; padding:0 22px; border-radius:999px; font-size:13px; font-weight:600; display:inline-flex; align-items:center; transition:transform .2s, border-color .2s; }
+    .btn-w { background:#fff; color:#0a0a0b; }
+    .btn-w:hover { transform:translateY(-1px); }
+    .btn-g { border:1px solid var(--line); }
+    .btn-g:hover { border-color:rgba(255,255,255,.3); }
+    .fine { margin-top:18px; font-size:11px; color:var(--mute); letter-spacing:.12em; }
+    section { margin-top:88px; }
+    h2 { font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--mute); margin-bottom:22px; }
+    .rule { height:1px; background:linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent); margin:0 0 22px; }
+    ol { color:var(--mute); font-size:15px; line-height:1.8; padding-left:18px; }
+    .keys { display:flex; flex-wrap:wrap; gap:8px; }
+    .chip { border:1px solid var(--line); border-radius:999px; padding:8px 14px; font-size:12px; color:var(--mute); }
+    .chip b { color:var(--ink); font-weight:500; margin-right:8px; }
+    footer { margin-top:100px; display:flex; justify-content:space-between; font-size:11px; color:var(--mute); letter-spacing:.16em; }
+    @media (max-width:640px) { nav { display:none; } header { margin-bottom:56px; } }
+  </style>
+</head>
+<body>
+  <div class="gridbg"></div>
+  <div class="glow" id="glow"></div>
+  <div class="noise"></div>
+  <div class="wrap">
+    <header class="rise">
+      <div class="brand"><span class="mark"><i></i><b></b></span> TRACE</div>
+      <nav>
+        <a href="#get">Get</a>
+        <a href="#setup">Setup</a>
+        <a href="https://discord.gg/HXh976tyEP">Discord</a>
+      </nav>
+    </header>
+    <p class="kicker rise d2">Official</p>
+    <h1 class="rise d2"><span>TRACE</span></h1>
+    <p class="sub rise d3">One loader. This domain only. Everything else is a copy.</p>
+    <div class="cta rise d4" id="get">
+      <a class="btn btn-w" href="https://get-trace.onrender.com/loader.exe">Download loader</a>
+      <a class="btn btn-g" href="https://discord.gg/HXh976tyEP">Discord</a>
+    </div>
+    <p class="fine rise d4">GET-TRACE.ONRENDER.COM / LOADER.EXE</p>
+    <section id="setup">
+      <h2>Setup</h2>
+      <div class="rule"></div>
+      <ol>
+        <li>Only use the Download loader button on this page. File: get-trace.onrender.com/loader.exe. Anything else named TRACE is not this build.</li>
+        <li>Join the Discord for status before you run a new drop. Invite: discord.gg/HXh976tyEP</li>
+        <li>Close extra Roblox windows. Leave one RobloxPlayerBeta session on the desktop, not fullscreen exclusive if the overlay fails to sit on top.</li>
+        <li>Run loader.exe. If Windows asks for elevation, accept. The loader checks version, writes under %LOCALAPPDATA%\Trace\&lt;version&gt;\, then starts TRACE.</li>
+        <li>Wait until the small TRACE window says starting and closes. If it stays on checking, you are offline or the host is down — try again later, do not grab a random exe.</li>
+        <li>In game: F1 opens the panel, F2 unloads. RMB or controller right trigger aims. Left trigger is triggerbot when a pad is connected.</li>
+        <li>If Windows Protection / SmartScreen stops the file, that is Windows classifying it. Allow it in Protection history on your own PC or do not run it. TRACE does not switch security software off.</li>
+        <li>After an update, bump happens from trace.txt on the host. Old version folders under %LOCALAPPDATA%\Trace are removed by the loader.</li>
+      </ol>
+    </section>
+    <section>
+      <h2>Keys</h2>
+      <div class="rule"></div>
+      <div class="keys">
+        <span class="chip"><b>F1</b>menu</span>
+        <span class="chip"><b>F2</b>unload</span>
+        <span class="chip"><b>RMB / RT</b>aim</span>
+        <span class="chip"><b>LT</b>trigger</span>
+      </div>
+    </section>
+    <footer>
+      <span>TRACE</span>
+      <span>get-trace.onrender.com</span>
+    </footer>
+  </div>
+  <script>
+    const g = document.getElementById('glow');
+    window.addEventListener('mousemove', e => {
+      g.style.left = e.clientX + 'px';
+      g.style.top = e.clientY + 'px';
+    }, { passive: true });
+  </script>
+</body>
+</html>
